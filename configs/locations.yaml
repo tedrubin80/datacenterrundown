@@ -1,0 +1,184 @@
+# Data Center Location Profiles
+# Source: DCCore.pdf Monte Carlo simulation parameters
+# All ranges are (min, mode, max) for triangular distributions
+
+locations:
+  boden_sweden:
+    name: "Boden, Sweden"
+    tier: nordic
+    currency: EUR
+    latitude: 66.0
+    longitude: 21.7
+    capex_millions: [180, 220, 280]
+    power_cost_mwh: [15.1, 22.5, 29.9]
+    pue: [1.05, 1.09, 1.15]
+    baseline_temp_c: 1.5
+    baseline_humidity_pct: 72.0
+    cooling_degree_days: 10
+    renewable_pct: 98
+    extreme_event_freq_annual: 2
+    grid_reliability_score: 0.95
+    mean_tco_10yr_millions: 499.5
+    cv: 0.073
+
+  kristiansand_norway:
+    name: "Kristiansand, Norway"
+    tier: nordic
+    currency: EUR
+    latitude: 58.1
+    longitude: 8.0
+    capex_millions: [190, 230, 290]
+    power_cost_mwh: [18.0, 25.0, 32.0]
+    pue: [1.06, 1.10, 1.16]
+    baseline_temp_c: 7.5
+    baseline_humidity_pct: 75.0
+    cooling_degree_days: 50
+    renewable_pct: 99
+    extreme_event_freq_annual: 3
+    grid_reliability_score: 0.94
+    mean_tco_10yr_millions: 596.9
+    cv: 0.066
+
+  iceland_reykjanes:
+    name: "Iceland (Reykjanes)"
+    tier: nordic
+    currency: EUR
+    latitude: 63.8
+    longitude: -22.7
+    capex_millions: [200, 250, 310]
+    power_cost_mwh: [16.0, 23.0, 30.0]
+    pue: [1.05, 1.08, 1.12]
+    baseline_temp_c: 4.0
+    baseline_humidity_pct: 78.0
+    cooling_degree_days: 5
+    renewable_pct: 100
+    extreme_event_freq_annual: 4  # volcanic/seismic
+    grid_reliability_score: 0.92
+    mean_tco_10yr_millions: 582.4
+    cv: 0.070
+
+  evanston_wyoming:
+    name: "Evanston, Wyoming"
+    tier: us_secondary
+    currency: USD
+    latitude: 41.3
+    longitude: -110.9
+    capex_millions: [750, 850, 1000]
+    power_cost_mwh: [25.0, 28.5, 40.0]
+    pue: [1.06, 1.08, 1.12]
+    baseline_temp_c: 6.0
+    baseline_humidity_pct: 45.0
+    cooling_degree_days: 300
+    renewable_pct: 65
+    extreme_event_freq_annual: 5
+    grid_reliability_score: 0.90
+    mean_tco_10yr_millions: 1270.2
+    cv: 0.078
+
+  salt_lake_city_utah:
+    name: "Salt Lake City, Utah"
+    tier: us_secondary
+    currency: USD
+    latitude: 40.8
+    longitude: -111.9
+    capex_millions: [800, 900, 1050]
+    power_cost_mwh: [30.0, 45.0, 65.0]
+    pue: [1.10, 1.18, 1.28]
+    baseline_temp_c: 11.5
+    baseline_humidity_pct: 40.0
+    cooling_degree_days: 700
+    renewable_pct: 45
+    extreme_event_freq_annual: 4
+    grid_reliability_score: 0.91
+    mean_tco_10yr_millions: 1618.0
+    cv: 0.072
+
+  des_moines_iowa:
+    name: "Des Moines, Iowa"
+    tier: us_secondary
+    currency: USD
+    latitude: 41.6
+    longitude: -93.6
+    capex_millions: [780, 870, 980]
+    power_cost_mwh: [28.0, 42.0, 60.0]
+    pue: [1.10, 1.20, 1.30]
+    baseline_temp_c: 10.0
+    baseline_humidity_pct: 65.0
+    cooling_degree_days: 650
+    renewable_pct: 55
+    extreme_event_freq_annual: 8  # tornado alley
+    grid_reliability_score: 0.89
+    mean_tco_10yr_millions: 1550.0
+    cv: 0.080
+
+  florence_south_carolina:
+    name: "Florence, South Carolina"
+    tier: us_secondary
+    currency: USD
+    latitude: 34.2
+    longitude: -79.8
+    capex_millions: [770, 860, 970]
+    power_cost_mwh: [35.0, 55.0, 80.0]
+    pue: [1.15, 1.25, 1.35]
+    baseline_temp_c: 17.0
+    baseline_humidity_pct: 72.0
+    cooling_degree_days: 1200
+    renewable_pct: 30
+    extreme_event_freq_annual: 10  # hurricanes, storms
+    grid_reliability_score: 0.86
+    mean_tco_10yr_millions: 1700.0
+    cv: 0.085
+
+  atlanta_georgia:
+    name: "Atlanta, Georgia"
+    tier: traditional
+    currency: USD
+    latitude: 33.7
+    longitude: -84.4
+    capex_millions: [1000, 1150, 1300]
+    power_cost_mwh: [65.0, 85.0, 115.0]
+    pue: [1.25, 1.35, 1.45]
+    baseline_temp_c: 17.5
+    baseline_humidity_pct: 70.0
+    cooling_degree_days: 1400
+    renewable_pct: 25
+    extreme_event_freq_annual: 8
+    grid_reliability_score: 0.87
+    mean_tco_10yr_millions: 1952.1
+    cv: 0.082
+
+  johor_malaysia:
+    name: "Johor, Malaysia"
+    tier: emerging
+    currency: USD
+    latitude: 1.5
+    longitude: 103.7
+    capex_millions: [900, 1050, 1200]
+    power_cost_mwh: [55.0, 75.0, 100.0]
+    pue: [1.30, 1.45, 1.55]
+    baseline_temp_c: 27.0
+    baseline_humidity_pct: 85.0
+    cooling_degree_days: 3200
+    renewable_pct: 25
+    extreme_event_freq_annual: 6
+    grid_reliability_score: 0.82
+    mean_tco_10yr_millions: 1661.8
+    cv: 0.075
+
+  sines_portugal:
+    name: "Sines, Portugal"
+    tier: emerging
+    currency: EUR
+    latitude: 37.9
+    longitude: -8.9
+    capex_millions: [350, 420, 500]
+    power_cost_mwh: [35.0, 50.0, 70.0]
+    pue: [1.15, 1.22, 1.30]
+    baseline_temp_c: 16.0
+    baseline_humidity_pct: 68.0
+    cooling_degree_days: 600
+    renewable_pct: 70
+    extreme_event_freq_annual: 5
+    grid_reliability_score: 0.88
+    mean_tco_10yr_millions: 850.0
+    cv: 0.077

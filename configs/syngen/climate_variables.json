@@ -1,0 +1,19 @@
+{
+  "rows": 10000,
+  "format": "csv",
+  "fields": [
+    {"name": "location_id", "type": "integer", "constraints": {"min": 0, "max": 9}},
+    {"name": "year", "type": "integer", "constraints": {"min": 2025, "max": 2050}},
+    {"name": "month", "type": "integer", "constraints": {"min": 1, "max": 12}},
+    {"name": "avg_temperature_c", "type": "float", "constraints": {"min": -10.0, "max": 40.0, "precision": 2}},
+    {"name": "max_temperature_c", "type": "float", "constraints": {"min": -5.0, "max": 50.0, "precision": 2}},
+    {"name": "cooling_degree_days", "type": "integer", "constraints": {"min": 0, "max": 4000}},
+    {"name": "relative_humidity_pct", "type": "float", "constraints": {"min": 15.0, "max": 98.0, "precision": 1}},
+    {"name": "extreme_heat_days", "type": "integer", "constraints": {"min": 0, "max": 150}},
+    {"name": "precipitation_mm", "type": "float", "constraints": {"min": 0.0, "max": 500.0, "precision": 1}},
+    {"name": "wind_speed_ms", "type": "float", "constraints": {"min": 0.0, "max": 45.0, "precision": 1}},
+    {"name": "flood_risk_score", "type": "float", "constraints": {"min": 0.0, "max": 1.0, "precision": 3}},
+    {"name": "storm_frequency_annual", "type": "integer", "constraints": {"min": 0, "max": 35}},
+    {"name": "wildfire_risk_score", "type": "float", "constraints": {"min": 0.0, "max": 1.0, "precision": 3}}
+  ]
+}

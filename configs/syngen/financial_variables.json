@@ -1,0 +1,17 @@
+{
+  "rows": 10000,
+  "format": "csv",
+  "fields": [
+    {"name": "location_id", "type": "integer", "constraints": {"min": 0, "max": 9}},
+    {"name": "year", "type": "integer", "constraints": {"min": 2025, "max": 2050}},
+    {"name": "capex_millions", "type": "float", "constraints": {"min": 150.0, "max": 1400.0, "precision": 2}},
+    {"name": "power_cost_mwh", "type": "float", "constraints": {"min": 10.0, "max": 130.0, "precision": 2}},
+    {"name": "pue", "type": "float", "constraints": {"min": 1.02, "max": 1.60, "precision": 3}},
+    {"name": "capacity_mw", "type": "float", "constraints": {"min": 5.0, "max": 100.0, "precision": 1}},
+    {"name": "utilization_pct", "type": "float", "constraints": {"min": 40.0, "max": 95.0, "precision": 1}},
+    {"name": "staffing_cost_annual_millions", "type": "float", "constraints": {"min": 2.0, "max": 25.0, "precision": 2}},
+    {"name": "maintenance_pct_capex", "type": "float", "constraints": {"min": 1.5, "max": 5.0, "precision": 2}},
+    {"name": "insurance_base_millions", "type": "float", "constraints": {"min": 0.5, "max": 15.0, "precision": 2}},
+    {"name": "tax_incentive_pct", "type": "float", "constraints": {"min": 0.0, "max": 20.0, "precision": 1}}
+  ]
+}

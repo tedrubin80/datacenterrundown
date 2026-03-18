@@ -1,0 +1,17 @@
+{
+  "rows": 5000,
+  "format": "csv",
+  "fields": [
+    {"name": "location_id", "type": "integer", "constraints": {"min": 0, "max": 9}},
+    {"name": "year", "type": "integer", "constraints": {"min": 2025, "max": 2050}},
+    {"name": "event_type_id", "type": "integer", "constraints": {"min": 0, "max": 5}},
+    {"name": "severity_score", "type": "float", "constraints": {"min": 0.1, "max": 1.0, "precision": 3}},
+    {"name": "duration_hours", "type": "float", "constraints": {"min": 0.5, "max": 720.0, "precision": 1}},
+    {"name": "downtime_hours", "type": "float", "constraints": {"min": 0.0, "max": 480.0, "precision": 1}},
+    {"name": "damage_cost_millions", "type": "float", "constraints": {"min": 0.0, "max": 50.0, "precision": 3}},
+    {"name": "recovery_days", "type": "integer", "constraints": {"min": 0, "max": 90}},
+    {"name": "grid_outage", "type": "boolean"},
+    {"name": "cooling_failure", "type": "boolean"},
+    {"name": "data_loss_event", "type": "boolean"}
+  ]
+}

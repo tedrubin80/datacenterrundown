@@ -1,0 +1,16 @@
+{
+  "rows": 10000,
+  "format": "csv",
+  "fields": [
+    {"name": "location_id", "type": "integer", "constraints": {"min": 0, "max": 9}},
+    {"name": "year", "type": "integer", "constraints": {"min": 2025, "max": 2050}},
+    {"name": "base_premium_millions", "type": "float", "constraints": {"min": 0.3, "max": 12.0, "precision": 3}},
+    {"name": "climate_risk_multiplier", "type": "float", "constraints": {"min": 0.8, "max": 3.5, "precision": 3}},
+    {"name": "deductible_millions", "type": "float", "constraints": {"min": 0.1, "max": 5.0, "precision": 3}},
+    {"name": "claims_count_prior_3yr", "type": "integer", "constraints": {"min": 0, "max": 15}},
+    {"name": "claims_total_prior_3yr_millions", "type": "float", "constraints": {"min": 0.0, "max": 40.0, "precision": 3}},
+    {"name": "coverage_limit_millions", "type": "float", "constraints": {"min": 10.0, "max": 500.0, "precision": 1}},
+    {"name": "business_interruption_days", "type": "integer", "constraints": {"min": 0, "max": 60}},
+    {"name": "property_value_millions", "type": "float", "constraints": {"min": 100.0, "max": 1500.0, "precision": 1}}
+  ]
+}
