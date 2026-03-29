@@ -11,9 +11,13 @@ Steps:
 """
 
 import sys
+import os
+import warnings
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
+os.environ["PYTHONWARNINGS"] = "ignore"
+warnings.filterwarnings("ignore")
 
 import numpy as np
 import pandas as pd
@@ -53,15 +57,16 @@ def main(seed: int = 42, use_bnn: bool = False):
     locations = load_locations()
 
     # Step 2: Run static Monte Carlo baseline
-    print("\n[2/6] Running static Monte Carlo baseline (10,000 sims x 10 locations)...")
-    static_results = run_all_locations(locations, n_simulations=10000, seed=seed)
+    print("\n[2/6] Running static Monte Carlo baseline (5,000 sims x 10 locations)...")
+    static_results = run_all_locations(locations, n_simulations=5000, seed=seed)
     for key, result in static_results.items():
         print(f"  {key}: mean={result.mean:.1f}M, CV={result.cv:.4f}")
 
-    # Step 3: Train ensemble model
-    print("\n[3/6] Training ensemble model...")
-    model, metrics = train_ensemble(projections, seed=seed)
-    print(f"  Validation R²: {metrics.get('val_r2', {})}")
+    # Step 3: Physics-based climate shifts (no ML training needed)
+    print("\n[3/6] Using physics-based climate shift model...")
+    print("  PUE shift: ~0.004 per °C x humidity factor (Depoorter et al.)")
+    print("  Power cost: scaled by scenario power_price_delta_pct")
+    print("  Insurance: event_ratio^1.5 nonlinear scaling")
 
     # Step 4: Run dynamic Monte Carlo for all locations x scenarios
     print("\n[4/6] Running dynamic Monte Carlo (3 scenarios x 10 locations)...")
@@ -80,7 +85,6 @@ def main(seed: int = 42, use_bnn: bool = False):
             result = run_dynamic_mc(
                 location=loc,
                 climate_projections=loc_proj,
-                model=model,
                 scenario=scenario,
                 n_simulations=5000,
                 seed=seed,

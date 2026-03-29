@@ -32,11 +32,11 @@ class EnsembleTCOModel:
 
     def __init__(
         self,
-        n_estimators_xgb: int = 300,
-        max_depth_xgb: int = 6,
+        n_estimators_xgb: int = 100,
+        max_depth_xgb: int = 4,
         learning_rate_xgb: float = 0.1,
-        n_estimators_rf: int = 500,
-        max_depth_rf: int = 12,
+        n_estimators_rf: int = 100,
+        max_depth_rf: int = 8,
         seed: int = 42,
     ):
         self.seed = seed
@@ -98,12 +98,6 @@ class EnsembleTCOModel:
             rf_model = RandomForestRegressor(**self.rf_params)
             rf_model.fit(X, y)
             members.append(rf_model)
-
-            # Additional RF with different seed for diversity
-            rf2_params = {**self.rf_params, "random_state": self.seed + 1}
-            rf2 = RandomForestRegressor(**rf2_params)
-            rf2.fit(X, y)
-            members.append(rf2)
 
             self.models[target_name] = members
 

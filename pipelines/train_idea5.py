@@ -11,9 +11,13 @@ Steps:
 """
 
 import sys
+import os
+import warnings
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
+os.environ["PYTHONWARNINGS"] = "ignore"
+warnings.filterwarnings("ignore")
 
 import numpy as np
 import pandas as pd
