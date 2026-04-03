@@ -9,7 +9,7 @@ import json
 import time
 from pathlib import Path
 from urllib.request import Request, urlopen
-from urllib.parse import urlencode, quote
+from urllib.parse import quote
 
 BASE_URL = "https://www.fema.gov/api/open/v2"
 OUTPUT_DIR = Path(__file__).parents[2] / "data" / "raw" / "fema"
@@ -35,7 +35,7 @@ def _api_get(endpoint: str, params: str = "") -> dict:
     """Make GET request to OpenFEMA API."""
     url = f"{BASE_URL}{endpoint}"
     if params:
-        url += f"?{params}"
+        url += f"?{quote(params, safe='=&$(),')}"
 
     req = Request(url)
     req.add_header("Accept", "application/json")

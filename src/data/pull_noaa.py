@@ -124,28 +124,44 @@ def pull_daily_climate_data(station_id: str, location_key: str, start: str, end:
     return all_data
 
 
-def pull_storm_events_by_state(fips: str, location_key: str) -> list:
-    """Pull storm event summaries for US states."""
-    print(f"  Pulling storm events for {location_key}...")
+def pull_extreme_precip_wind(station_id: str, location_key: str) -> list:
+    """Pull high-precip and high-wind daily records as extreme event proxies.
 
-    result = _api_get("/data", {
-        "datasetid": "GHCND",
-        "locationid": fips,
-        "datatypeid": "PRCP,SNOW,AWND",
-        "startdate": "2020-01-01",
-        "enddate": "2024-12-31",
-        "units": "metric",
-        "limit": 1000,
-    })
-    time.sleep(REQUEST_DELAY)
+    Filters GHCND data for days with heavy precipitation (>50mm) or
+    high wind speeds (>15 m/s) as indicators of extreme weather events.
+    """
+    print(f"  Pulling extreme weather events for {location_key}...")
+    all_data = []
 
-    if "results" in result:
-        data = result["results"]
-        for row in data:
-            row["location_key"] = location_key
-        print(f"    Got {len(data)} records")
-        return data
-    return []
+    for year in range(2015, 2025):
+        result = _api_get("/data", {
+            "datasetid": "GHCND",
+            "stationid": station_id,
+            "datatypeid": "PRCP,AWND,SNOW",
+            "startdate": f"{year}-01-01",
+            "enddate": f"{year}-12-31",
+            "units": "metric",
+            "limit": 1000,
+        })
+        time.sleep(REQUEST_DELAY)
+
+        if "results" in result:
+            for row in result["results"]:
+                # Flag extreme days: precip > 50mm or wind > 15 m/s
+                val = row.get("value", 0)
+                dtype = row.get("datatype", "")
+                is_extreme = (
+                    (dtype == "PRCP" and val > 500) or  # tenths of mm
+                    (dtype == "AWND" and val > 150) or  # tenths of m/s
+                    (dtype == "SNOW" and val > 200)     # mm
+                )
+                if is_extreme:
+                    row["location_key"] = location_key
+                    row["extreme"] = True
+                    all_data.append(row)
+
+    print(f"    Got {len(all_data)} extreme event records")
+    return all_data
 
 
 def pull_all_locations():
@@ -209,16 +225,15 @@ def main():
     _save(stations, "selected_stations.json")
     print(f"\nTotal climate records: {len(climate_data)}")
 
-    # Pull storm data for US locations
-    print("\n--- Storm/Precipitation Events (US States) ---")
+    # Pull extreme weather events using the stations we already found
+    print("\n--- Extreme Weather Events (via station data) ---")
     storm_data = []
-    for loc_key, loc_info in LOCATIONS.items():
-        if "fips" in loc_info:
-            data = pull_storm_events_by_state(loc_info["fips"], loc_key)
-            storm_data.extend(data)
+    for loc_key, station_info in stations.items():
+        data = pull_extreme_precip_wind(station_info["station_id"], loc_key)
+        storm_data.extend(data)
 
-    _save(storm_data, "storm_events.json")
-    print(f"Total storm records: {len(storm_data)}")
+    _save(storm_data, "extreme_events.json")
+    print(f"Total extreme event records: {len(storm_data)}")
 
     print("\n" + "=" * 60)
     print("NOAA PULL COMPLETE")
