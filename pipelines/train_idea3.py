@@ -56,16 +56,15 @@ def main(seed: int = 42, use_bnn: bool = False):
     projections = generate_all_projections(seed=seed)
     locations = load_locations()
 
-    # Step 2: Run static Monte Carlo baseline (both horizons)
+    # Step 2: Run static Monte Carlo baseline (all horizons)
     print("\n[2/6] Running static Monte Carlo baseline (5,000 sims x 10 locations)...")
-    static_results = run_all_locations(locations, n_simulations=5000, horizon_years=10, seed=seed)
-    static_results_15 = run_all_locations(locations, n_simulations=5000, horizon_years=15, seed=seed)
-    print("  10-year horizon:")
-    for key, result in static_results.items():
-        print(f"    {key}: mean={result.mean:.1f}M, CV={result.cv:.4f}")
-    print("  15-year horizon:")
-    for key, result in static_results_15.items():
-        print(f"    {key}: mean={result.mean:.1f}M, CV={result.cv:.4f}")
+    static_by_horizon = {}
+    for h in [10, 15, 25]:
+        static_by_horizon[h] = run_all_locations(locations, n_simulations=5000, horizon_years=h, seed=seed)
+        print(f"  {h}-year horizon:")
+        for key, result in static_by_horizon[h].items():
+            print(f"    {key}: mean={result.mean:.1f}M, CV={result.cv:.4f}")
+    static_results = static_by_horizon[10]
 
     # Step 3: Physics-based climate shifts (no ML training needed)
     print("\n[3/6] Using physics-based climate shift model...")
@@ -74,7 +73,8 @@ def main(seed: int = 42, use_bnn: bool = False):
     print("  Insurance: event_ratio^1.5 nonlinear scaling")
 
     # Step 4: Run dynamic Monte Carlo for all locations x scenarios x horizons
-    for horizon in [10, 15]:
+    dynamic_by_horizon = {}
+    for horizon in [10, 15, 25]:
         print(f"\n[4/6] Running dynamic Monte Carlo ({horizon}-year horizon, 3 scenarios x 10 locations)...")
         dynamic_results = {}
 
@@ -99,14 +99,24 @@ def main(seed: int = 42, use_bnn: bool = False):
                 dynamic_results[loc_key][scenario] = result.tco_distribution
                 print(f"  {loc_key}/{scenario}: mean={result.mean:.1f}M, CV={result.cv:.4f}")
 
-        # Store for the primary analysis (use 15yr as the main result)
-        if horizon == 15:
-            dynamic_results_15 = dynamic_results
-        else:
-            dynamic_results_10 = dynamic_results
+        dynamic_by_horizon[horizon] = dynamic_results
 
-    # Use 15yr as primary for analysis
-    dynamic_results = dynamic_results_15
+    # Use 25yr as primary for analysis (shows full compounding)
+    dynamic_results = dynamic_by_horizon[25]
+    static_results = static_by_horizon[25]
+
+    # Print horizon comparison for key locations
+    print("\n  === HORIZON COMPARISON (RCP 8.5 climate premium) ===")
+    print(f"  {'Location':<30} {'10yr Gap':>10} {'15yr Gap':>10} {'25yr Gap':>10}")
+    print("  " + "-" * 62)
+    for loc_key in ["boden_sweden", "atlanta_georgia", "johor_malaysia", "evanston_wyoming"]:
+        gaps = []
+        for h in [10, 15, 25]:
+            s = static_by_horizon[h][loc_key].mean
+            d85 = np.mean(dynamic_by_horizon[h][loc_key].get("rcp85", [s]))
+            d26 = np.mean(dynamic_by_horizon[h][loc_key].get("rcp26", [s]))
+            gaps.append(d85 - d26)
+        print(f"  {locations[loc_key].name:<30} {gaps[0]:>+9.1f}M {gaps[1]:>+9.1f}M {gaps[2]:>+9.1f}M")
 
     # Step 5: Analysis
     print("\n[5/6] Computing risk metrics and comparisons...")

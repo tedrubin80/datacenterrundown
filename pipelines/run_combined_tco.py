@@ -77,7 +77,7 @@ def main(seed: int = 42):
     # Step 2: Static facility TCO baseline
     # ----------------------------------------------------------------
     print("\n[2/5] Running facility Monte Carlo (5K sims × 10 locations)...")
-    facility_results = run_all_locations(locations, n_simulations=5000, horizon_years=10, seed=seed)
+    facility_results = run_all_locations(locations, n_simulations=5000, horizon_years=25, seed=seed)
 
     # ----------------------------------------------------------------
     # Step 3: Climate-adjusted hardware TCO under RCP scenarios
@@ -106,13 +106,13 @@ def main(seed: int = 42):
             for tier_key, tier in HARDWARE_TIERS.items():
                 hw = compute_climate_adjusted_hw_tco(
                     tier, loc, climate_by_year,
-                    n_racks=500, horizon_years=15, start_year=2025,
+                    n_racks=500, horizon_years=25, start_year=2025,
                 )
 
                 # Also get facility dynamic TCO
                 facility_dynamic = run_dynamic_mc(
                     loc, loc_proj, scenario=scenario,
-                    n_simulations=2000, horizon_years=15, seed=seed,
+                    n_simulations=2000, horizon_years=25, seed=seed,
                 )
 
                 total_energy = sum(y["energy"] for y in hw["yearly"])
@@ -122,10 +122,10 @@ def main(seed: int = 42):
                     "scenario": scenario,
                     "tier": tier.name,
                     "tier_key": tier_key,
-                    "hw_tco_15yr_m": round(hw["total_hw_tco_m"], 1),
-                    "hw_energy_15yr_m": round(total_energy, 1),
-                    "facility_tco_15yr_m": round(facility_dynamic.mean, 1),
-                    "combined_tco_15yr_m": round(hw["total_hw_tco_m"] + facility_dynamic.mean, 1),
+                    "hw_tco_25yr_m": round(hw["total_hw_tco_m"], 1),
+                    "hw_energy_25yr_m": round(total_energy, 1),
+                    "facility_tco_25yr_m": round(facility_dynamic.mean, 1),
+                    "combined_tco_25yr_m": round(hw["total_hw_tco_m"] + facility_dynamic.mean, 1),
                 })
 
     climate_hw_df = pd.DataFrame(climate_hw_results)
@@ -134,7 +134,7 @@ def main(seed: int = 42):
     # ----------------------------------------------------------------
     # Step 4: Summary comparisons
     # ----------------------------------------------------------------
-    print("\n[4/5] Summary: Combined TCO (Facility + Hardware, 15yr, Standard AI)...")
+    print("\n[4/5] Summary: Combined TCO (Facility + Hardware, 25yr, Standard AI)...")
 
     ai_climate = climate_hw_df[climate_hw_df["tier_key"] == "standard_ai"]
     print(f"\n  {'Location':<30} {'RCP2.6':>10} {'RCP4.5':>10} {'RCP8.5':>10} {'Gap':>10}")
@@ -149,7 +149,7 @@ def main(seed: int = 42):
                 (ai_climate["scenario"] == scenario)
             ]
             if len(row) > 0:
-                vals[scenario] = row.iloc[0]["combined_tco_15yr_m"]
+                vals[scenario] = row.iloc[0]["combined_tco_25yr_m"]
 
         if len(vals) == 3:
             gap = vals["rcp85"] - vals["rcp26"]
@@ -157,7 +157,7 @@ def main(seed: int = 42):
                   f"{vals['rcp85']:>9,.0f}M {gap:>+9,.0f}M")
 
     # ARM climate advantage
-    print("\n  ARM Efficiency Climate Advantage (15yr, RCP 8.5 vs Standard AI):")
+    print("\n  ARM Efficiency Climate Advantage (25yr, RCP 8.5 vs Standard AI):")
     print(f"  {'Location':<30} {'AI Combined':>12} {'ARM Combined':>12} {'Savings':>10}")
     print("  " + "-" * 66)
 
@@ -174,15 +174,15 @@ def main(seed: int = 42):
             (climate_hw_df["tier_key"] == "arm_efficiency")
         ]
         if len(ai_row) > 0 and len(arm_row) > 0:
-            ai_total = ai_row.iloc[0]["combined_tco_15yr_m"]
-            arm_total = arm_row.iloc[0]["combined_tco_15yr_m"]
+            ai_total = ai_row.iloc[0]["combined_tco_25yr_m"]
+            arm_total = arm_row.iloc[0]["combined_tco_25yr_m"]
             savings = ai_total - arm_total
             print(f"  {loc.name:<30} {ai_total:>11,.0f}M {arm_total:>11,.0f}M {savings:>+9,.0f}M")
 
     # ----------------------------------------------------------------
     # Step 5: Climate impact on hardware energy alone
     # ----------------------------------------------------------------
-    print("\n[5/5] Climate impact on hardware energy (Standard AI, 15yr)...")
+    print("\n[5/5] Climate impact on hardware energy (Standard AI, 25yr)...")
     print(f"\n  {'Location':<30} {'Static':>10} {'RCP2.6':>10} {'RCP8.5':>10} {'Climate Δ':>10}")
     print("  " + "-" * 62)
 
@@ -202,8 +202,8 @@ def main(seed: int = 42):
         ]
 
         if len(r26) > 0 and len(r85) > 0:
-            e26 = r26.iloc[0]["hw_energy_15yr_m"]
-            e85 = r85.iloc[0]["hw_energy_15yr_m"]
+            e26 = r26.iloc[0]["hw_energy_25yr_m"]
+            e85 = r85.iloc[0]["hw_energy_25yr_m"]
             delta = e85 - e26
             print(f"  {loc.name:<30} {static_energy:>9,.1f}M {e26:>9,.1f}M "
                   f"{e85:>9,.1f}M {delta:>+9,.1f}M")
