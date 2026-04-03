@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate-Driven Datacenter TCO Optimization</title>
+    <meta name="description" content="Machine learning approaches to dynamic total cost of ownership modeling under global warming scenarios for AI datacenter infrastructure.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-inner">
+            <a href="#" class="logo">DCRundown</a>
+            <div class="nav-links">
+                <a href="#findings">Findings</a>
+                <a href="#data">Data</a>
+                <a href="#methodology">Methodology</a>
+                <a href="#resources">Resources</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <span class="badge">Research Paper &mdash; April 2026</span>
+            <h1>Climate Change Reshapes<br>Datacenter Investment Economics</h1>
+            <p class="subtitle">Machine learning approaches to dynamic TCO modeling under global warming scenarios across 10 global markets</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-value">$2.1B</span>
+                    <span class="stat-label">25-Year TCO Gap<br>Boden vs Atlanta</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">$179M</span>
+                    <span class="stat-label">Climate Premium<br>Atlanta (RCP 8.5)</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">$456M</span>
+                    <span class="stat-label">HW Energy Delta<br>Atlanta (RCP 8.5)</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">0.94</span>
+                    <span class="stat-label">Survival Model<br>Concordance</span>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <a href="https://github.com/tedrubin80/datacenterrundown" class="btn btn-primary">View on GitHub</a>
+                <a href="https://www.kaggle.com/datasets/theodorerubin/climate-driven-datacenter-tco" class="btn btn-secondary">Kaggle Dataset</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="abstract">
+        <div class="container">
+            <h2>Abstract</h2>
+            <p>This research extends prior Monte Carlo simulation work on global datacenter location optimization by introducing <strong>climate-dynamic TCO modeling</strong> and <strong>extreme weather impact quantification</strong>. Analyzing 10 strategic global markets across 100,000+ simulation iterations, we demonstrate that climate change amplifies existing location advantages&mdash;widening the TCO gap between Nordic and traditional hub locations from approximately 74% (static baseline) to over 80% under RCP 8.5 by 2050. We integrate IT hardware costs (4 tiers including GPU and ARM architectures) to show that hardware energy is the dominant channel through which climate change affects datacenter economics, with a 4.6x climate exposure ratio between Boden, Sweden and Atlanta, Georgia.</p>
+        </div>
+    </section>
+
+    <section id="findings" class="findings">
+        <div class="container">
+            <h2>Key Findings</h2>
+            <div class="findings-grid">
+                <div class="finding-card">
+                    <div class="finding-icon">1</div>
+                    <h3>Climate Amplifies Location Inequality</h3>
+                    <p>The facility-only climate gap grows <strong>4.9x</strong> from 10-year to 25-year horizons. Atlanta faces +$37.1M in climate premium vs +$16.6M for Boden over 25 years.</p>
+                </div>
+                <div class="finding-card">
+                    <div class="finding-icon">2</div>
+                    <h3>Hardware Energy is the Real Story</h3>
+                    <p>For a 100MW AI facility (500 racks), hardware energy costs range from <strong>$203M</strong> (Boden) to <strong>$1,074M</strong> (Atlanta) under RCP 8.5&mdash;a 5.3x spread driven by PUE degradation.</p>
+                </div>
+                <div class="finding-card">
+                    <div class="finding-icon">3</div>
+                    <h3>Nordic Resilience Confirmed</h3>
+                    <p>Boden, Sweden maintains cost leadership under all climate scenarios with only <strong>+$47M</strong> climate premium over 25 years, compared to +$179M at Atlanta.</p>
+                </div>
+                <div class="finding-card">
+                    <div class="finding-icon">4</div>
+                    <h3>ARM Efficiency Offsets Climate Risk</h3>
+                    <p>ARM-based hardware (Apple silicon) reduces hardware energy by <strong>85%</strong>, saving $131&ndash;491M per facility. Partially compensates for climate-vulnerable locations.</p>
+                </div>
+                <div class="finding-card">
+                    <div class="finding-icon">5</div>
+                    <h3>Real Disaster Data Validates Risk</h3>
+                    <p>Georgia averages <strong>149 FEMA disaster declarations/year</strong> vs Wyoming's 9&mdash;a 16x disparity. Survival model concordance: 0.94 using real data.</p>
+                </div>
+                <div class="finding-card">
+                    <div class="finding-icon">6</div>
+                    <h3>BNN Validates Physics Model</h3>
+                    <p>Bayesian Neural Network uncertainty bands (2&sigma;) encompass physics predictions across all locations, with <strong>94&ndash;100%</strong> calibration coverage.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tco-table-section">
+        <div class="container">
+            <h2>Combined 25-Year TCO: Facility + AI Hardware</h2>
+            <p class="section-subtitle">100MW reference facility, 500 Standard AI racks (H100-based), climate-adjusted</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Tier</th>
+                            <th>RCP 2.6</th>
+                            <th>RCP 4.5</th>
+                            <th>RCP 8.5</th>
+                            <th>Climate Gap</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="tier-nordic">
+                            <td>Boden, Sweden</td><td>Nordic</td>
+                            <td>$14,300M</td><td>$14,314M</td><td>$14,347M</td><td class="positive">+$47M</td>
+                        </tr>
+                        <tr class="tier-nordic">
+                            <td>Iceland (Reykjanes)</td><td>Nordic</td>
+                            <td>$14,336M</td><td>$14,355M</td><td>$14,388M</td><td class="positive">+$52M</td>
+                        </tr>
+                        <tr class="tier-nordic">
+                            <td>Kristiansand, Norway</td><td>Nordic</td>
+                            <td>$14,328M</td><td>$14,347M</td><td>$14,381M</td><td class="positive">+$53M</td>
+                        </tr>
+                        <tr class="tier-secondary">
+                            <td>Evanston, Wyoming</td><td>US Secondary</td>
+                            <td>$15,200M</td><td>$15,224M</td><td>$15,262M</td><td class="positive">+$61M</td>
+                        </tr>
+                        <tr class="tier-emerging">
+                            <td>Sines, Portugal</td><td>Emerging</td>
+                            <td>$14,831M</td><td>$14,873M</td><td>$14,935M</td><td class="warning">+$104M</td>
+                        </tr>
+                        <tr class="tier-secondary">
+                            <td>Florence, SC</td><td>US Secondary</td>
+                            <td>$15,487M</td><td>$15,534M</td><td>$15,602M</td><td class="warning">+$115M</td>
+                        </tr>
+                        <tr class="tier-emerging">
+                            <td>Johor, Malaysia</td><td>Emerging</td>
+                            <td>$16,037M</td><td>$16,105M</td><td>$16,206M</td><td class="danger">+$170M</td>
+                        </tr>
+                        <tr class="tier-traditional">
+                            <td>Atlanta, Georgia</td><td>Traditional</td>
+                            <td>$16,220M</td><td>$16,292M</td><td>$16,398M</td><td class="danger">+$179M</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="data" class="data-section">
+        <div class="container">
+            <h2>Data Sources</h2>
+            <div class="data-grid">
+                <div class="data-card">
+                    <h3>EIA API</h3>
+                    <p>US retail electricity prices and generation mix by state (2015&ndash;2025). 55 price records + 4.5MB generation data for 5 US locations.</p>
+                </div>
+                <div class="data-card">
+                    <h3>NOAA CDO API</h3>
+                    <p>Historical daily temperature, precipitation, and wind data. 46,044 records across 9 weather stations near datacenter locations.</p>
+                </div>
+                <div class="data-card">
+                    <h3>FEMA OpenData</h3>
+                    <p>69,769 disaster declarations (1953&ndash;2026). Georgia: 149/yr vs Wyoming: 9/yr&mdash;real extreme event frequency for insurance modeling.</p>
+                </div>
+                <div class="data-card">
+                    <h3>DCCore Paper</h3>
+                    <p>Monte Carlo simulation parameters for 10 global markets. Facility TCO, CapEx, PUE, power rates, and risk metrics from 100,000 iterations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="methodology" class="methodology">
+        <div class="container">
+            <h2>Methodology</h2>
+            <div class="method-grid">
+                <div class="method-card">
+                    <h3>Dynamic Monte Carlo</h3>
+                    <p>Physics-based shift functions replace static distributions with year-by-year climate-adjusted parameters. PUE degrades at 0.008&ndash;0.012 per &deg;C with humidity compounding.</p>
+                    <code>PUE(t) = PUE_base + &Delta;T &times; &beta; &times; (1 + H_f) &times; (1 + 0.05&Delta;T)</code>
+                </div>
+                <div class="method-card">
+                    <h3>Survival Analysis</h3>
+                    <p>Weibull AFT model predicts time-to-outage from climate covariates and real FEMA disaster data. Concordance index: 0.94.</p>
+                    <code>log T = &beta;<sup>T</sup>x + &sigma;&epsilon;, &epsilon; ~ Gumbel</code>
+                </div>
+                <div class="method-card">
+                    <h3>Insurance Regression</h3>
+                    <p>Quantile Gradient Boosted regression with nonlinear event scaling. Premium ~ event_ratio<sup>1.5</sup>. RMSE: $0.71M.</p>
+                    <code>&sigma;_ins(t) = (E(t) / E_0)<sup>1.5</sup></code>
+                </div>
+                <div class="method-card">
+                    <h3>Bayesian Validation</h3>
+                    <p>MC Dropout BNN (12K params) independently validates physics shifts. 94&ndash;100% of true values within 2&sigma; uncertainty bands.</p>
+                    <code>p(y|x) &approx; (1/N) &sum; f(x; &theta;_n)</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="hardware-section">
+        <div class="container">
+            <h2>Hardware Tier Analysis</h2>
+            <p class="section-subtitle">Climate impact multiplied across IT equipment at 100MW scale</p>
+            <div class="hw-grid">
+                <div class="hw-card">
+                    <h3>Standard AI Rack</h3>
+                    <div class="hw-specs">
+                        <span>H100 GPU</span>
+                        <span>$3.5M/rack</span>
+                        <span>100 kW</span>
+                        <span>4yr refresh</span>
+                    </div>
+                    <p class="hw-impact">Climate &Delta; (25yr): Boden +$99M vs Atlanta +$456M</p>
+                </div>
+                <div class="hw-card">
+                    <h3>ARM Efficiency</h3>
+                    <div class="hw-specs">
+                        <span>Apple Silicon</span>
+                        <span>$800K/rack</span>
+                        <span>15 kW</span>
+                        <span>5yr refresh</span>
+                    </div>
+                    <p class="hw-impact">85% energy reduction. Saves $131&ndash;491M per facility.</p>
+                </div>
+                <div class="hw-card">
+                    <h3>Hybrid GPU+CPU</h3>
+                    <div class="hw-specs">
+                        <span>H100 PCIe + CPU</span>
+                        <span>$2.0M/rack</span>
+                        <span>60 kW</span>
+                        <span>4yr refresh</span>
+                    </div>
+                    <p class="hw-impact">Balanced training/inference. Mid-range climate exposure.</p>
+                </div>
+                <div class="hw-card">
+                    <h3>Traditional PC</h3>
+                    <div class="hw-specs">
+                        <span>Enterprise CPU</span>
+                        <span>$500K/rack</span>
+                        <span>20 kW</span>
+                        <span>5yr refresh</span>
+                    </div>
+                    <p class="hw-impact">Lowest CapEx, limited AI throughput. Edge/inference only.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="resources" class="resources">
+        <div class="container">
+            <h2>Resources</h2>
+            <div class="resource-grid">
+                <a href="https://github.com/tedrubin80/datacenterrundown" class="resource-card">
+                    <h3>GitHub Repository</h3>
+                    <p>Full source code, pipelines, configs, and LaTeX paper. MIT License.</p>
+                </a>
+                <a href="https://www.kaggle.com/datasets/theodorerubin/climate-driven-datacenter-tco" class="resource-card">
+                    <h3>Kaggle Dataset</h3>
+                    <p>6 executed notebooks, processed data, FEMA records, hardware TCO results.</p>
+                </a>
+                <a href="https://github.com/tedrubin80/datacenterrundown/tree/main/paper" class="resource-card">
+                    <h3>Paper (LaTeX)</h3>
+                    <p>Full manuscript with methodology, results tables, and bibliography.</p>
+                </a>
+                <a href="https://github.com/tedrubin80/datacenterrundown/tree/main/notebooks" class="resource-card">
+                    <h3>Notebooks</h3>
+                    <p>6 Jupyter notebooks covering EDA, dynamic TCO, survival analysis, BNN, and synthesis.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Ted Rubin &mdash; April 2026 &mdash; Climate-Driven Datacenter TCO Optimization</p>
+            <p class="footer-sub">Built with Monte Carlo simulation, XGBoost, Weibull AFT, and Bayesian Neural Networks</p>
+        </div>
+    </footer>
+</body>
+</html>
