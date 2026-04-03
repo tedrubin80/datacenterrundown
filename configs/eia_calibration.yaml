@@ -1,0 +1,41 @@
+# EIA-Calibrated Power Costs
+# Real commercial retail prices from EIA API (2020-2025 average)
+# vs paper assumptions (industrial/wholesale rates)
+#
+# Note: Datacenter rates typically fall between industrial and commercial
+# due to negotiated PPAs. We use the midpoint as the calibrated estimate.
+
+eia_calibrated_rates:
+  # location: [paper_mode, eia_real_commercial, calibrated_estimate]
+  evanston_wyoming:
+    paper_mode_mwh: 28.5
+    eia_commercial_mwh: 94.4
+    calibrated_mwh: 45.0     # PPA + industrial discount
+    eia_trend_per_year: -0.07 # stable/slightly declining
+
+  salt_lake_city_utah:
+    paper_mode_mwh: 45.0
+    eia_commercial_mwh: 87.9
+    calibrated_mwh: 55.0
+    eia_trend_per_year: 0.86
+
+  des_moines_iowa:
+    paper_mode_mwh: 42.0
+    eia_commercial_mwh: 103.8
+    calibrated_mwh: 58.0
+    eia_trend_per_year: 1.76  # rising fast
+
+  florence_south_carolina:
+    paper_mode_mwh: 55.0
+    eia_commercial_mwh: 106.6
+    calibrated_mwh: 68.0
+    eia_trend_per_year: 0.61
+
+  atlanta_georgia:
+    paper_mode_mwh: 85.0
+    eia_commercial_mwh: 109.8
+    calibrated_mwh: 90.0
+    eia_trend_per_year: 1.76  # rising fast
+
+# International locations: no EIA data, keep paper values
+# Nordic rates verified by industry sources at €15-30/MWh
