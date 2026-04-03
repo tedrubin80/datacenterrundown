@@ -56,11 +56,16 @@ def main(seed: int = 42, use_bnn: bool = False):
     projections = generate_all_projections(seed=seed)
     locations = load_locations()
 
-    # Step 2: Run static Monte Carlo baseline
+    # Step 2: Run static Monte Carlo baseline (both horizons)
     print("\n[2/6] Running static Monte Carlo baseline (5,000 sims x 10 locations)...")
-    static_results = run_all_locations(locations, n_simulations=5000, seed=seed)
+    static_results = run_all_locations(locations, n_simulations=5000, horizon_years=10, seed=seed)
+    static_results_15 = run_all_locations(locations, n_simulations=5000, horizon_years=15, seed=seed)
+    print("  10-year horizon:")
     for key, result in static_results.items():
-        print(f"  {key}: mean={result.mean:.1f}M, CV={result.cv:.4f}")
+        print(f"    {key}: mean={result.mean:.1f}M, CV={result.cv:.4f}")
+    print("  15-year horizon:")
+    for key, result in static_results_15.items():
+        print(f"    {key}: mean={result.mean:.1f}M, CV={result.cv:.4f}")
 
     # Step 3: Physics-based climate shifts (no ML training needed)
     print("\n[3/6] Using physics-based climate shift model...")
@@ -68,29 +73,40 @@ def main(seed: int = 42, use_bnn: bool = False):
     print("  Power cost: scaled by scenario power_price_delta_pct")
     print("  Insurance: event_ratio^1.5 nonlinear scaling")
 
-    # Step 4: Run dynamic Monte Carlo for all locations x scenarios
-    print("\n[4/6] Running dynamic Monte Carlo (3 scenarios x 10 locations)...")
-    dynamic_results = {}  # {location: {scenario: distribution}}
+    # Step 4: Run dynamic Monte Carlo for all locations x scenarios x horizons
+    for horizon in [10, 15]:
+        print(f"\n[4/6] Running dynamic Monte Carlo ({horizon}-year horizon, 3 scenarios x 10 locations)...")
+        dynamic_results = {}
 
-    for loc_key, loc in locations.items():
-        dynamic_results[loc_key] = {}
-        for scenario in ["rcp26", "rcp45", "rcp85"]:
-            loc_proj = projections[
-                (projections["location_key"] == loc_key) &
-                (projections["scenario"] == scenario)
-            ]
-            if len(loc_proj) == 0:
-                continue
+        for loc_key, loc in locations.items():
+            dynamic_results[loc_key] = {}
+            for scenario in ["rcp26", "rcp45", "rcp85"]:
+                loc_proj = projections[
+                    (projections["location_key"] == loc_key) &
+                    (projections["scenario"] == scenario)
+                ]
+                if len(loc_proj) == 0:
+                    continue
 
-            result = run_dynamic_mc(
-                location=loc,
-                climate_projections=loc_proj,
-                scenario=scenario,
-                n_simulations=5000,
-                seed=seed,
-            )
-            dynamic_results[loc_key][scenario] = result.tco_distribution
-            print(f"  {loc_key}/{scenario}: mean={result.mean:.1f}M, CV={result.cv:.4f}")
+                result = run_dynamic_mc(
+                    location=loc,
+                    climate_projections=loc_proj,
+                    scenario=scenario,
+                    n_simulations=5000,
+                    horizon_years=horizon,
+                    seed=seed,
+                )
+                dynamic_results[loc_key][scenario] = result.tco_distribution
+                print(f"  {loc_key}/{scenario}: mean={result.mean:.1f}M, CV={result.cv:.4f}")
+
+        # Store for the primary analysis (use 15yr as the main result)
+        if horizon == 15:
+            dynamic_results_15 = dynamic_results
+        else:
+            dynamic_results_10 = dynamic_results
+
+    # Use 15yr as primary for analysis
+    dynamic_results = dynamic_results_15
 
     # Step 5: Analysis
     print("\n[5/6] Computing risk metrics and comparisons...")

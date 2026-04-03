@@ -69,28 +69,38 @@ def _physics_shifts(
     years_elapsed = year - start_year
 
     # --- Temperature-driven PUE degradation ---
-    # Literature: ~0.004 PUE per °C for air-cooled, ~0.002 for liquid-cooled
-    # Hotter baselines degrade faster (nonlinear via humidity interaction)
+    # Literature: 0.5-1.5% PUE increase per °C (Shehabi et al., 2016; Lei & Masanet, 2020)
+    # Air-cooled: ~0.008-0.012 PUE per °C; liquid-cooled: ~0.003-0.005
+    # Higher baselines degrade faster (nonlinear — approaching cooling capacity limits)
     temp_now = row.get("avg_temp_c", location.baseline_temp_c)
     temp_delta = temp_now - location.baseline_temp_c
     humidity = row.get("humidity_pct", location.baseline_humidity_pct)
     # Wet-bulb effect: high humidity compounds cooling penalty
-    humidity_factor = 1.0 + max(0, humidity - 60) / 200  # up to 1.2x at 100% humidity
-    pue_shift = temp_delta * 0.004 * humidity_factor
-    pue_noise = 0.002 + years_elapsed * 0.0003  # uncertainty grows over time
+    humidity_factor = 1.0 + max(0, humidity - 60) / 100  # up to 1.4x at 100% humidity
+    # Baseline PUE affects sensitivity: already-efficient facilities degrade less
+    pue_base = location.pue[1]
+    pue_sensitivity = 0.008 if pue_base < 1.15 else 0.012  # liquid vs air cooled
+    # Nonlinear: each additional degree hurts more as you approach cooling limits
+    pue_shift = temp_delta * pue_sensitivity * humidity_factor * (1 + temp_delta * 0.05)
+    pue_noise = 0.003 + years_elapsed * 0.0005
 
     # --- Power cost escalation ---
-    # Direct: power_price_delta_pct from scenario
-    # Indirect: higher PUE means more kWh consumed at same rate
+    # Direct: power_price_delta_pct from scenario (grid stress, demand growth)
+    # Indirect: higher CDD = more cooling energy at same PUE
     power_price_pct = row.get("power_price_delta_pct", 0)
-    # Convert % to absolute shift on location's base power cost
     base_power_mode = location.power_cost_mwh[1]
-    power_shift = base_power_mode * (power_price_pct / 100)
-    # Grid stress adds volatility
-    power_noise = base_power_mode * 0.02 * (1 + years_elapsed * 0.01)
+    # CDD-driven cooling demand increase
+    cdd_now = row.get("cooling_degree_days", location.cooling_degree_days)
+    cdd_delta_pct = (cdd_now - location.cooling_degree_days) / max(1, location.cooling_degree_days) * 100
+    # Total power cost shift: price pressure + cooling demand growth
+    power_shift = base_power_mode * ((power_price_pct + cdd_delta_pct * 0.3) / 100)
+    # Grid stress adds volatility — worse in high-demand regions
+    grid_stress = 1 + (1 - location.grid_reliability_score) * 5
+    power_noise = base_power_mode * 0.03 * grid_stress * (1 + years_elapsed * 0.015)
 
     # --- Insurance premium escalation ---
     # Nonlinear: premiums jump when event frequency crosses thresholds
+    # Based on insurance industry catastrophe modeling (Swiss Re sigma reports)
     event_freq = row.get("extreme_event_freq", location.extreme_event_freq_annual)
     baseline_events = location.extreme_event_freq_annual
     event_ratio = event_freq / max(1, baseline_events)
