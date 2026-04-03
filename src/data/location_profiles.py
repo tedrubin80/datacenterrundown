@@ -34,16 +34,38 @@ class LocationProfile:
         return self.currency == "EUR"
 
 
-def load_locations(config_path: str = None) -> dict[str, LocationProfile]:
-    """Load all location profiles from YAML config."""
+def load_locations(config_path: str = None, eia_calibrated: bool = False) -> dict[str, LocationProfile]:
+    """Load all location profiles from YAML config.
+
+    Args:
+        config_path: Path to locations.yaml.
+        eia_calibrated: If True, override US power costs with EIA-calibrated
+            estimates from configs/eia_calibration.yaml.
+    """
     if config_path is None:
         config_path = Path(__file__).parents[2] / "configs" / "locations.yaml"
 
     with open(config_path) as f:
         raw = yaml.safe_load(f)
 
+    # Load EIA calibration if requested
+    eia_overrides = {}
+    if eia_calibrated:
+        eia_path = Path(__file__).parents[2] / "configs" / "eia_calibration.yaml"
+        if eia_path.exists():
+            with open(eia_path) as f:
+                eia_raw = yaml.safe_load(f)
+            for loc_key, vals in eia_raw.get("eia_calibrated_rates", {}).items():
+                cal = vals["calibrated_mwh"]
+                # Build new triangular: ±30% around calibrated midpoint
+                eia_overrides[loc_key] = (cal * 0.7, cal, cal * 1.3)
+
     locations = {}
     for key, vals in raw["locations"].items():
+        power_cost = tuple(vals["power_cost_mwh"])
+        if eia_calibrated and key in eia_overrides:
+            power_cost = eia_overrides[key]
+
         locations[key] = LocationProfile(
             key=key,
             name=vals["name"],
@@ -52,7 +74,7 @@ def load_locations(config_path: str = None) -> dict[str, LocationProfile]:
             latitude=vals["latitude"],
             longitude=vals["longitude"],
             capex_millions=tuple(vals["capex_millions"]),
-            power_cost_mwh=tuple(vals["power_cost_mwh"]),
+            power_cost_mwh=power_cost,
             pue=tuple(vals["pue"]),
             baseline_temp_c=vals["baseline_temp_c"],
             baseline_humidity_pct=vals["baseline_humidity_pct"],
