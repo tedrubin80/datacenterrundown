@@ -1,0 +1,44 @@
+{
+  "title": "Climate-Driven Datacenter Location Optimization: Machine Learning Approaches to Dynamic TCO Modeling Under Global Warming Scenarios",
+  "description": "Research software and paper accompanying a study of climate-driven datacenter economics. Extends Monte Carlo simulation (DCCore, 2025) with two ML contributions: (1) Climate-Dynamic TCO Model — ensemble (XGBoost + Random Forest) and Bayesian Neural Network models replace static cost distributions with year-by-year predictions under IPCC RCP 2.6, 4.5, and 8.5 pathways; (2) Extreme Weather Impact Model — Weibull AFT survival analysis, XGBoost outage classification, and quantile gradient boosted regression for insurance premium trajectories, calibrated on 69,769 real FEMA disaster records (1953–2026). Analyzes 10 global datacenter markets. Key finding: hardware energy costs exceed facility TCO by 5–10x; Nordic locations show compounding advantages under climate change, with a 4.6x climate exposure ratio between Boden, Sweden and Atlanta, Georgia. ARM-based silicon (Apple silicon — Mac Studio/Mac Pro, apple.com specs Q1 2026; Mac Pro discontinued Q2 2026) reduces hardware energy 85% across all locations.",
+  "upload_type": "software",
+  "publication_date": "2026-04-06",
+  "creators": [
+    {
+      "name": "Rubin, Ted",
+      "affiliation": "Independent Researcher",
+      "orcid": "0009-0005-3313-5817"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "datacenter",
+    "total cost of ownership",
+    "TCO",
+    "climate change",
+    "Monte Carlo simulation",
+    "machine learning",
+    "Bayesian neural network",
+    "Power Usage Effectiveness",
+    "PUE",
+    "AI infrastructure",
+    "infrastructure investment",
+    "IPCC RCP scenarios",
+    "survival analysis",
+    "extreme weather",
+    "geographic arbitrage",
+    "Nordic datacenters",
+    "climate risk"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.15100375",
+      "relation": "isDerivedFrom",
+      "scheme": "doi",
+      "resource_type": "publication-technicalnote"
+    }
+  ],
+  "language": "eng",
+  "access_right": "open",
+  "notes": "Predecessor study (DCCore, 2025) is included in this repository as DCCore.pdf. Hardware cost data for the ARM efficiency tier sourced from publicly available Apple product specifications (apple.com/mac-pro, apple.com/mac-studio, retrieved Q1 2026). Apple discontinued the Mac Pro shortly after data collection (Q2 2026). AUROC = 1.00 for the outage classifier reflects synthetic data construction, not real-world performance — documented in Section 5.4 of the paper and in README.md."
+}
