@@ -1,0 +1,74 @@
+cff-version: 1.2.0
+message: "If you use this software or data in your research, please cite it as below."
+type: software
+title: "Climate-Driven Datacenter Location Optimization: Machine Learning Approaches to Dynamic TCO Modeling Under Global Warming Scenarios"
+version: 1.0.0
+date-released: "2026-04-06"
+license: MIT
+repository-code: "https://github.com/theorubin/datacenterrundown"
+
+authors:
+  - family-names: Rubin
+    given-names: Ted
+    email: ted@theorubin.com
+    affiliation: "Independent Researcher"
+
+abstract: >
+  Research software accompanying the paper on climate-driven datacenter location
+  optimization. Extends Monte Carlo simulation with ML-driven dynamic TCO modeling
+  under IPCC RCP scenarios (2.6, 4.5, 8.5) across 10 global markets. Includes
+  Bayesian neural network uncertainty quantification, Weibull survival analysis
+  for extreme weather impacts, and hardware lifecycle cost integration for
+  AI-class infrastructure. Key finding: hardware energy costs exceed facility
+  TCO by 5-10x; Nordic locations show compounding advantages under climate change.
+
+keywords:
+  - datacenter
+  - total cost of ownership
+  - climate change
+  - Monte Carlo simulation
+  - machine learning
+  - Bayesian neural network
+  - Power Usage Effectiveness
+  - AI infrastructure
+  - infrastructure investment
+  - IPCC RCP scenarios
+  - survival analysis
+  - geographic arbitrage
+
+references:
+  - type: article
+    title: "Global Datacenter Location Optimization: A Monte Carlo Simulation Analysis of Strategic Markets"
+    authors:
+      - family-names: Rubin
+        given-names: Ted
+    year: 2025
+    notes: "DCCore Research Series (predecessor study)"
+
+  - type: conference-paper
+    title: "Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning"
+    authors:
+      - family-names: Gal
+        given-names: Yarin
+      - family-names: Ghahramani
+        given-names: Zoubin
+    conference:
+      name: "International Conference on Machine Learning (ICML)"
+    year: 2016
+
+  - type: article
+    title: "The Cost of a Cloud: Research Problems in Data Center Networks"
+    authors:
+      - family-names: Greenberg
+        given-names: Albert
+      - family-names: Hamilton
+        given-names: James
+      - family-names: Maltz
+        given-names: David A.
+      - family-names: Patel
+        given-names: Parveen
+    journal: "ACM SIGCOMM Computer Communication Review"
+    volume: 39
+    issue: 1
+    pages: "68-73"
+    year: 2009
